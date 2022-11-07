@@ -1,0 +1,21 @@
+{
+    "name": "Lucas",
+    "job": "Desenvolvedor de software",
+    "github": "olucascruz",
+    "playlists": {
+        "jogos":[
+            {
+                "title":"O titulo",
+                "url":"google.com",
+                "thumb":"foto.png"
+            }
+        ],
+        "frontend":[
+            {
+                "title":"O titulo2",
+                "url":"google.com",
+                "thumb":"foto.png"
+            }
+        ]  
+    }
+}
