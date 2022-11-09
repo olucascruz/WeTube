@@ -2,29 +2,24 @@ import config from "../config.json"
 import styled from "styled-components"
 import {CSSReset} from "../src/components/CSSReset"
 import {StyledTimeline} from "../src/components/Timeline"
+import Menu from "../src/components/Menu/Menu"
 
 
 function HomePage(){
     return(
-    <div>
+        <>
         <CSSReset/>
-        <Header/>
-        <Menu/>
-        <TimeLine playlists = {config.playlists}/>
-    </div>       
+        <div>
+            <Menu/>
+            <Header/>
+            <TimeLine playlists = {config.playlists}/>
+        </div>
+        </>       
     ) 
 }
 
 
 export default HomePage;
-
-const Menu = () =>{
-    return(
-        <div>
-        Menu    
-        </div>
-    )
-}
 
 const StyledHeader = styled.div`
     img{
@@ -33,6 +28,7 @@ const StyledHeader = styled.div`
         border-radius: 50%;
     }
     .user-info{
+        margin-top: 50px;
         display: flex;
         align-items: center;
         width: 100%;
@@ -61,16 +57,23 @@ const TimeLine = (props) => {
     const playlistsNames = Object.keys(props.playlists);
     return (
         <StyledTimeline>
-            {playlistsNames.map((playlistName)=>{
-                const videos = props.playlists[playlistName];
-                return videos.map((video) =>{
-                    return (
+            {playlistsNames.map((playlistsName)=>{
+                const videos = props.playlists[playlistsName];
+                return(
+                    <section>
+                    <h2>{playlistsName}</h2>
+                    <div>
+                    {videos.map((video)=>{
+                    return(
                         <a href={video.url}>
                             <img src={video.thumb}></img>
                             <span>{video.title}</span>
                         </a>
                     )
-                })
+                })}
+                    </div>
+                    </section>
+                    ) 
             })}
         </StyledTimeline>
     )
