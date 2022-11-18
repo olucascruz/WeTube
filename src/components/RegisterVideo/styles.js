@@ -33,6 +33,7 @@ export const StyledRegisterVideo = styled.div`
     border-radius: 2px;
     cursor: pointer;
     color: inherit;
+    margin-top: 10px;
   }
   form {
     width: 100%;
