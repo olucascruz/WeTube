@@ -73,11 +73,13 @@ const TimeLine = (props) => {
         async function gettingPlaylist(){
             try{
                 const _playlists = await getPlaylists();
+                let listPlaylist = []
                 _playlists.map((el)=>{
-                    setPlaylists([el]);
+                    listPlaylist.push(el);
                 });
+                setPlaylists(listPlaylist);
 
-                console.log(playlistsNames);
+    
             }catch(error){
                 console.log(error);
             }
@@ -87,9 +89,13 @@ const TimeLine = (props) => {
         async function gettingVideo(){
             try{
                 const _videos = await getVideos();
+                let listVideos = []
                 _videos.map((el)=>{
-                    setVideos([el]);
+                    listVideos.push(el);
                 });
+
+                setVideos(listVideos);
+
 
                 console.log(videos);
             }catch(error){
@@ -126,29 +132,3 @@ const TimeLine = (props) => {
     )
 }
 
-
-// {playlistsNames.map((playlistsName)=>{
-//     const videos = props.playlists[playlistsName];
-//     return(
-//         <section key={playlistsName}>
-//             <h2>{playlistsName}</h2>
-//             <div>
-//                 {videos
-//                     .filter((video)=>{
-//                         const titleNormalize = video.title.toLowerCase();
-//                         const searchNormalize = props.filterValue.toLowerCase();
-
-//                         return titleNormalize.includes(searchNormalize);
-//                     })
-//                     .map((video)=>{
-//                         return(
-//                             <a key={video.url} href={video.url}>
-//                                 <img src={video.thumb}></img>
-//                                 <span>{video.title}</span>
-//                             </a>
-//                         )
-//                     })}
-//             </div>
-//         </section>
-//         ) 
-// })}

@@ -35,6 +35,15 @@ export const StyledRegisterVideo = styled.div`
     color: inherit;
     margin-top: 10px;
   }
+  .add-playlist {
+    background-color: blue;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    color: inherit;
+    margin-top: 10px;
+  }
   form {
     width: 100%;
     padding: 5%;

@@ -1,6 +1,7 @@
 import {StyledRegisterVideo} from "./styles"
 import { getPlaylists } from "../../service/getPlaylists";
 import { registerVideo } from "../../service/registerVideo";
+import { registerPlaylist } from "../../service/registerPlaylist";
 import React from "react"
 
 function useForm(propsDoForm){
@@ -24,9 +25,9 @@ function useForm(propsDoForm){
 
 export default function RegisterVideo(){
     const [formVisible, setFormVisible] = React.useState(false)
-    const formCadastro = useForm({
-        initialValues:{title:"black panter", url:"www.google.com"}
-    })
+    const formCadastroVideo = useForm({})
+    const formCadastroPlaylist = useForm({})
+
     const [formPlaylist, setFormPlaylist] = React.useState(false)
 
     const [options, setOptions] = React.useState(undefined);
@@ -34,11 +35,13 @@ export default function RegisterVideo(){
     React.useEffect(()=>{
         async function setPlaylists(){
             try{
-                const playlists = await getPlaylists()
-
+                const playlists = await getPlaylists();
+                console.log(playlists);
+                let listPlaylists = []
                 playlists.map((el)=>{
-                    setOptions([el]);
+                    listPlaylists.push(el)
                 });
+                    setOptions(listPlaylists);
 
             }catch(error){
                 console.log(error)
@@ -63,12 +66,15 @@ export default function RegisterVideo(){
 
             {formVisible && (formPlaylist ?
 
-            /* ----------- Forms: cadastrar playlisy -------------*/ 
+            /* ----------- Forms: cadastrar playlist -------------*/ 
             <form onSubmit={(event)=>{
                 event.preventDefault();
                 setFormPlaylist(false);
-                // setFormVisible(false);
-                // formCadastro.clearForm();
+                registerPlaylist(formCadastroPlaylist)
+                setFormVisible(false);
+                formCadastroPlaylist.clearForm();
+                
+
 
             }}>
                 <div>            
@@ -81,7 +87,8 @@ export default function RegisterVideo(){
                     <input 
                     name="name"  
                     placeholder="Nome da playlist" 
-                    onChange={console.log("a")} />
+                    onChange={formCadastroPlaylist.handleChange}
+                    />
                     <button type="submit">
                         Cadastrar
                     </button>  
@@ -92,9 +99,9 @@ export default function RegisterVideo(){
             /* ----------- Forms: cadastrar video -------------*/
             <form onSubmit={(event)=>{
                 event.preventDefault();
-                registerVideo(formCadastro);
+                registerVideo(formCadastroVideo);
                 setFormVisible(false);
-                formCadastro.clearForm();
+                formCadastroVideo.clearForm();
 
             }}>
                 <div>            
@@ -102,27 +109,31 @@ export default function RegisterVideo(){
                         X
                     </button>
                     <input 
-                    name="title" 
-                    value={formCadastro.values.title} 
+                    name="title"
+                    maxLength={100} 
                     placeholder="Título do vídeo" 
-                    onChange={formCadastro.handleChange} />
+                    onChange={formCadastroVideo.handleChange} />
                     
                     <input name="url"
-                    value={formCadastro.values.url} 
-                    placeholder="URL" 
-                    onChange={formCadastro.handleChange}/>
+                    placeholder="URL"
+                    maxLength={150} 
+                    onChange={formCadastroVideo.handleChange}/>
                     
-                    <select name="playlist" onChange={formCadastro.handleChange}>
+                    <select name="playlist" onChange={formCadastroVideo.handleChange}>
                         <option>Selecione a playlist</option>
-                        {hasOptions && options.map((opts)=>
-                        <option value={opts._id} key={opts._id}>
-                            {opts.name}
-                        </option>)
+                        {hasOptions && options.map((opts)=>{
+                            
+                        return(
+                            <option value={opts._id} key={opts._id}>
+                                {opts.name}
+                            </option>
+                            )
+                        })
                         };
                     </select>
 
-                    <button type="button" onClick={()=>{
-                        formCadastro.clearForm();
+                    <button className="add-playlist" type="button" onClick={()=>{
+                        formCadastroVideo.clearForm();
                         setFormPlaylist(true);
                         }}>
                         Adiconar playlist
