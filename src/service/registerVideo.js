@@ -13,22 +13,23 @@ function getThumbByUrl(url){
 
 
 
-export async function registerVideo(event){
+export async function registerVideo(formCadastro){
+    try{
 
-
-    const form = event.target;
-    const title = form.tile.value;
-    const url = form.url.value;
+    const form = formCadastro
+    const title = form.values.title;
+    const url = form.values.url;
     const thumb = getThumbByUrl(url);
-    const playlist = form.playlist.value;
+    const playlist = form.values.playlist;
 
-
+    console.log(form.values);
 
     const response = await fetch("http://localhost:3001/videos", {
         method: "POST",
         body: JSON.stringify({"title": title, "url":url, "thumb":thumb, "playlist":playlist}),
         headers:{
-            "Content-type": "application/json",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }, 
      });
 
@@ -36,4 +37,8 @@ export async function registerVideo(event){
 
     console.log(body)
     document.location.reload(true);
+    }catch(error){
+        console.log(error)
+        
+    }
 }

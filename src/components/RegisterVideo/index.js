@@ -1,5 +1,6 @@
 import {StyledRegisterVideo} from "./styles"
 import { getPlaylists } from "../../service/getPlaylists";
+import { registerVideo } from "../../service/registerVideo";
 import React from "react"
 
 function useForm(propsDoForm){
@@ -55,8 +56,9 @@ export default function RegisterVideo(){
             {formVisible && (
             <form onSubmit={(event)=>{
                 event.preventDefault();
-                setFormVisible(false);
-                formCadastro.clearForm();
+                registerVideo(formCadastro);
+                // setFormVisible(false);
+                // formCadastro.clearForm();
 
             }}>
                 <div>            
@@ -75,7 +77,7 @@ export default function RegisterVideo(){
                     <select name="playlist" onChange={formCadastro.handleChange}>
                         {<option>{notOptions && "Sem opções"}</option>}
                         {!notOptions && options.map((opts)=>
-                        <option key={opts.name}>
+                        <option value={opts._id} key={opts._id}>
                             {opts.name}
                         </option>)
                         };
