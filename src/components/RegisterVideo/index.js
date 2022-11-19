@@ -34,25 +34,28 @@ export default function RegisterVideo(){
     React.useEffect(()=>{
         async function setPlaylists(){
             try{
-            const playlists = await getPlaylists()
-            setOptions(playlists.name)
-            playlists.map((el)=>{
-                setOptions([el]);
-            });
+                const playlists = await getPlaylists()
 
-            console.log(playlists);
+                playlists.map((el)=>{
+                    setOptions([el]);
+                });
+
             }catch(error){
                 console.log(error)
             }
         }
         setPlaylists();
+
     },[])
 
-    const notOptions = options === undefined;
+    const hasOptions = options != undefined;
         
     return(
         <StyledRegisterVideo>
-            <button className="add-video" onClick={()=>setFormVisible(true)}>
+            <button className="add-video" onClick={()=>{
+                setFormVisible(true)
+            }}
+                >
                 +
             </button>
 
@@ -110,8 +113,8 @@ export default function RegisterVideo(){
                     onChange={formCadastro.handleChange}/>
                     
                     <select name="playlist" onChange={formCadastro.handleChange}>
-                        {<option>{notOptions && "Sem opções"}</option>}
-                        {!notOptions && options.map((opts)=>
+                        <option>Selecione a playlist</option>
+                        {hasOptions && options.map((opts)=>
                         <option value={opts._id} key={opts._id}>
                             {opts.name}
                         </option>)
