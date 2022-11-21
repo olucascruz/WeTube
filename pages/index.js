@@ -96,8 +96,6 @@ const TimeLine = (props) => {
 
                 setVideos(listVideos);
 
-
-                console.log(videos);
             }catch(error){
                 console.log(error);
             }
