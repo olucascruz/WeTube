@@ -4,6 +4,8 @@ import {ThemeProvider} from "styled-components"
 import {CSSReset} from "../src/components/CSSReset"
 import ColorModeProvider, {ColorModeContext} from "../src/components/Menu/components/ColorMode"
 import RegisterVideo from "../src/components/RegisterVideo"
+import Head from "next/head"
+import favicon from "../src/img/favicon-16x16.png"
 
 
 const theme = {
@@ -38,6 +40,11 @@ function MyApp({Component, pageProps}){
 
     return(
         <ThemeProvider theme={theme[context.mode]}>
+            <Head>
+            <link rel="icon" type="image/png" sizes="16x16" href={favicon}/>
+                <title>WeTube</title>
+                
+            </Head>
             <CSSReset/>
             <Component {...pageProps}/>
             <RegisterVideo />

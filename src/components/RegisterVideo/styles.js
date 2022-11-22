@@ -51,6 +51,11 @@ export const StyledRegisterVideo = styled.div`
     font-size: smaller;
     color: red;
   }
+  .tip{
+    color:gray;
+    font-size: 0.8rem;
+    text-align: center;
+  }
   form {
     width: 100%;
     padding: 5%;

@@ -3,12 +3,15 @@ import { getPlaylists } from "../../service/getPlaylists";
 import { registerVideo } from "../../service/registerVideo";
 import { registerPlaylist } from "../../service/registerPlaylist";
 import React from "react"
+import { getVideos } from "../../service/getVideos";
 
 function useForm(props){
     const [values, setValues] = React.useState([]);
     const [validForm, setValidForm] = React.useState(false);
     const [error, setError] = React.useState("");
     const [playlists, setPlaylists] = React.useState();
+    const [videos, setVideos] = React.useState(undefined);
+
 
     function validationForm(typeForm){
     
@@ -29,6 +32,14 @@ function useForm(props){
         }
 
         if(typeForm === "videoForm"){
+            let titleVideos = [];
+            let urlVideos = [];
+
+            videos.map((video)=>{
+                titleVideos.push(video.title.toLowerCase());
+                urlVideos.push(video.url.toLowerCase());
+            })
+
             if(!values.title || !values.url || !values.playlist){
                return setError("Campos não preenchidos");
             }
@@ -37,17 +48,25 @@ function useForm(props){
                 return setError("url inválida")
             }
 
+            if(titleVideos.includes(values.title.toLowerCase())){
+                return setError("Título já existe")
+            }
+
+            if(urlVideos.includes(values.url.toLowerCase())){
+                return setError("url já está sendo usada")
+            }
+
             return setValidForm(true);
         
         }
     }
-
 
     return{
         values,
         validForm,
         error,
         setPlaylists,
+        setVideos,
         validationForm,
         handleChange:(event)=>{
             const value = event.target.value;
@@ -57,18 +76,10 @@ function useForm(props){
                 [name]:value,
             })
 
-
-
-
-
-
         },
         clearForm:()=>{setValues({}); setError("");}
     };
 }
-
-
-
 
 
 export default function RegisterVideo(){
@@ -77,32 +88,36 @@ export default function RegisterVideo(){
     const formCadastroPlaylist = useForm({})
     const [formPlaylist, setFormPlaylist] = React.useState(false)
     const [options, setOptions] = React.useState(undefined);
-    
+
     React.useEffect(()=>{
-        async function setPlaylists(){
+        // Get playlists and set in Hook
+        async function setPlaylistsAndVideos(){
             try{
+
                 const playlists = await getPlaylists();
-                let listPlaylists = []
+                let listPlaylists = [];
                 playlists.map((el)=>{
                     listPlaylists.push(el)
                 });
-                    setOptions(listPlaylists);
-                    formCadastroPlaylist.setPlaylists(listPlaylists);
+                setOptions(listPlaylists);
+                formCadastroPlaylist.setPlaylists(listPlaylists);
+                
+                // Get videos and set in Hook
+                const videos = await getVideos();
+                let listVideos = [];
+                videos.map((el)=>{
+                    listVideos.push(el);
+                });
+                formCadastroVideo.setVideos(listVideos);
 
             }catch(error){
                 console.log(error)
             }
         }
-        setPlaylists();
-
+        setPlaylistsAndVideos();
     },[])
 
     const hasOptions = options != undefined;
-
-    
-
-
-
 
     return(
         <StyledRegisterVideo>
@@ -136,6 +151,7 @@ export default function RegisterVideo(){
                     }}>
                         X
                     </button>
+                    <span className="tip">crie uma playlist</span>
                     <input 
                     name="name"  
                     placeholder="Nome da playlist" 
@@ -171,6 +187,7 @@ export default function RegisterVideo(){
                     }}>
                         X
                     </button>
+                    <span className="tip">adicione um video do youtube</span>
                     <input 
                     name="title"
                     maxLength={100} 
